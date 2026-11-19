@@ -42,8 +42,6 @@ export default function LoginPage() {
 
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-lg overflow-hidden grid md:grid-cols-2">
 
-        {/* Left Section */}
-        
         {/* Right Section */}
         <div className="p-8 md:p-12 flex flex-col justify-center">
 
@@ -148,6 +146,21 @@ export default function LoginPage() {
             </button>
 
           </form>
+
+          {/* Demo Credentials */}
+          <div className="mt-6 bg-gray-50 border border-gray-200 rounded-xl p-4">
+            <p className="text-sm font-semibold text-gray-700">
+              Demo Credentials
+            </p>
+
+            <p className="text-sm text-gray-500 mt-2">
+              Email: admin@hospital.com
+            </p>
+
+            <p className="text-sm text-gray-500">
+              Password: admin123
+            </p>
+          </div>
 
           <p className="text-center text-xs text-gray-400 mt-8">
             © 2026 MediCare Hospital Management System

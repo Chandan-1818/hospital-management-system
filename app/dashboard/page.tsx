@@ -11,7 +11,6 @@ import {
   Building2,
   CreditCard,
   Settings,
-  Search,
   Bell,
   Menu,
   X,
@@ -61,7 +60,6 @@ const statistics = [
 
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [search, setSearch] = useState("");
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
@@ -153,6 +151,7 @@ export default function DashboardPage() {
         {/* Header */}
         <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-gray-200 bg-white px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
+            {/* Mobile Menu */}
             <button
               onClick={() => setSidebarOpen(true)}
               className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 lg:hidden"
@@ -160,31 +159,15 @@ export default function DashboardPage() {
               <Menu size={22} />
             </button>
 
+            {/* Page Title */}
             <div>
               <h2 className="text-lg font-semibold text-gray-900">
                 Dashboard
               </h2>
+
               <p className="hidden text-xs text-gray-500 sm:block">
                 Hospital overview
               </p>
-            </div>
-          </div>
-
-          {/* Search */}
-          <div className="hidden w-full max-w-xs md:block">
-            <div className="relative">
-              <Search
-                size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-
-              <input
-                type="text"
-                placeholder="Search..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-              />
             </div>
           </div>
 
@@ -347,10 +330,7 @@ export default function DashboardPage() {
 
                 <tbody>
                   <tr>
-                    <td
-                      colSpan={6}
-                      className="px-5 py-12 text-center"
-                    >
+                    <td colSpan={6} className="px-5 py-12 text-center">
                       <CalendarDays
                         size={36}
                         className="mx-auto mb-3 text-gray-300"
