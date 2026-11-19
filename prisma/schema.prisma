@@ -1,0 +1,92 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id          String   @id
+  name        String
+  dateOfBirth DateTime?
+  gender      String?
+  phone       String?
+  email       String?
+  bloodGroup  String?
+  address     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  appointments   Appointment[]
+  medicalRecords MedicalRecord[]
+}
+
+model Doctor {
+  id            String   @id
+  name          String
+  specialization String?
+  department     String?
+  phone         String?
+  email         String?
+  experience    Int?
+  availability  String?  @default("Available")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  appointments   Appointment[]
+  medicalRecords MedicalRecord[]
+}
+
+model Appointment {
+  id        String   @id @default(cuid())
+  patientId String
+  doctorId  String
+  date      DateTime
+  time      String
+  reason    String?
+  status    String   @default("Pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctor  Doctor  @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([date])
+}
+
+model MedicalRecord {
+  id           String   @id @default(cuid())
+  patientId    String
+  doctorId     String?
+  diagnosis    String
+  treatment    String
+  prescription String?
+  recordDate   DateTime
+  followUpDate DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctor  Doctor? @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([recordDate])
+}
+model Department {
+  id          String   @id
+  name        String   @unique
+  head        String   @default("")
+  location    String   @default("")
+  phone       String   @default("")
+  email       String   @default("")
+  description String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+

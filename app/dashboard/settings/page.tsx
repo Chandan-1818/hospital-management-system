@@ -31,7 +31,6 @@ type SettingsData = {
   adminPhone: string;
   notifications: {
     appointments: boolean;
-    billing: boolean;
     patients: boolean;
     reminders: boolean;
   };
@@ -48,7 +47,6 @@ const defaultSettings: SettingsData = {
   adminPhone: "+91 98765 43210",
   notifications: {
     appointments: true,
-    billing: true,
     patients: true,
     reminders: false,
   },
@@ -84,7 +82,9 @@ export default function SettingsPage() {
           ...parsed,
           notifications: {
             ...defaultSettings.notifications,
-            ...parsed.notifications,
+            appointments: parsed.notifications?.appointments ?? true,
+            patients: parsed.notifications?.patients ?? true,
+            reminders: parsed.notifications?.reminders ?? false,
           },
         });
       }
@@ -453,13 +453,6 @@ export default function SettingsPage() {
               description="Receive notifications for new and updated appointments."
               checked={settings.notifications.appointments}
               onChange={() => updateNotification("appointments")}
-            />
-
-            <NotificationItem
-              title="Billing Notifications"
-              description="Get notified about payments, pending bills and transactions."
-              checked={settings.notifications.billing}
-              onChange={() => updateNotification("billing")}
             />
 
             <NotificationItem
