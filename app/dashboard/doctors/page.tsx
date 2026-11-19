@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Stethoscope,
@@ -27,8 +27,11 @@ type Doctor = {
   availability: string;
 };
 
+const doctorStorageKey = "medicare-doctors";
+
 export default function DoctorsPage() {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [storageLoaded, setStorageLoaded] = useState(false);
   const [search, setSearch] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingDoctor, setEditingDoctor] = useState<Doctor | null>(null);
@@ -42,6 +45,25 @@ export default function DoctorsPage() {
     experience: "",
     availability: "Available",
   });
+
+  useEffect(() => {
+    try {
+      const savedDoctors = window.localStorage.getItem(doctorStorageKey);
+      if (savedDoctors) {
+        const parsedDoctors: unknown = JSON.parse(savedDoctors);
+        if (Array.isArray(parsedDoctors)) setDoctors(parsedDoctors as Doctor[]);
+      }
+    } catch {
+      window.localStorage.removeItem(doctorStorageKey);
+    } finally {
+      setStorageLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!storageLoaded) return;
+    window.localStorage.setItem(doctorStorageKey, JSON.stringify(doctors));
+  }, [doctors, storageLoaded]);
 
   const filteredDoctors = doctors.filter((doctor) =>
     `${doctor.name} ${doctor.specialization} ${doctor.department} ${doctor.phone}`
